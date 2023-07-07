@@ -26,6 +26,9 @@ type Array = [Value]
 
 type Parser = Parsec Void String
 
+parseJson :: String -> String -> Either (ParseErrorBundle String Void) Value
+parseJson = parse $ between skipSpace eof json
+
 -- https://serokell.io/blog/parser-combinators-in-haskell
 skipSpace :: Parser ()
 skipSpace =
