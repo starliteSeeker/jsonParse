@@ -26,19 +26,13 @@ type Array = [Value]
 
 type Parser = Parsec Void String
 
+-- file_name -> contents -> result
 parseJson :: String -> String -> Either (ParseErrorBundle String Void) Value
 parseJson = parse $ between skipSpace eof json
 
 -- https://serokell.io/blog/parser-combinators-in-haskell
 skipSpace :: Parser ()
-skipSpace =
-  L.space
-    -- Like `space`, but skips 1 or more space characters.
-    space1
-    -- Skip from ;; until a newline.
-    empty
-    -- Skip from /* until */. There is also `skipBlockComment`, but it doesn't handle nested comments.
-    empty
+skipSpace = L.space space1 empty empty
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme skipSpace
